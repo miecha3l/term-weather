@@ -9,17 +9,21 @@ args = ap.parse()
 wp = WeatherProvider(config)
 data = wp.fetchWeather()
 
-if args.now:
-  currentWeather = data['current'].toString()
-  print(currentWeather)
-  exit()
+def run():
+  if args.now:
+    currentWeather = data['current'].toString()
+    print(currentWeather)
+    return
 
-if args.tommorow:
-  tommorowWeather = data['daily'][0].toString()
-  print(tommorowWeather)
-  exit()
+  if args.tommorow:
+    tommorowWeather = data['daily'][0].toString()
+    print(tommorowWeather)
+    return
 
-if args.daily:
-  for day in data['daily']:
-    print(day.toString())
-  exit()
+  if args.daily:
+    for day in data['daily']:
+      print(day.toString())
+    return
+
+if __name__ == '__main__':
+  run()
