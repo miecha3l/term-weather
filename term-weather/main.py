@@ -1,5 +1,8 @@
-import common.services.weather_provider as wp
-from common.models.weather import Weather 
+import common.services.config as cfg
+from common.services.weather_provider import WeatherProvider
 
-w = Weather(wp.getWeatherForCity('Szczecin'))
-print(w.toString())
+config = cfg.load()
+wp = WeatherProvider(config)
+
+weather = wp.getCurrentWeather()
+print(weather.toString())
