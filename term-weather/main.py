@@ -4,5 +4,4 @@ from common.services.weather_provider import WeatherProvider
 config = cfg.load()
 wp = WeatherProvider(config)
 
-weather = wp.getCurrentWeather()
-print(weather.toString())
+data = wp.fetchWeather()

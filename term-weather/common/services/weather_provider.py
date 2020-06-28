@@ -5,11 +5,36 @@ class WeatherProvider:
   def __init__(self, config):
     self.apiKey = config['apiKey']
     self.location = config['location']
-    self.apiUrl = 'https://api.openweathermap.org/data/2.5/weather'
+    self.apiUrl = config['apiUrl']
+  
+  def fetchWeather(self):
+    lat, lon = self.location['lat'], self.location['lon']
+    req = f'{self.apiUrl}?lat={lat}&lon={lon}&exclude=minutely,hourly&appid={self.apiKey}'
+    res = requests.get(req)
+    data = res.json()
 
-  def getCurrentWeather(self):
-    reqUrl = f'{self.apiUrl}?q={self.location}&appid={self.apiKey}'
-    res = requests.get(reqUrl)
-    return Weather(res.json())
+    return {
+      'current': Weather(
+        data['current']['temp'],
+        data['current']['feels_like'],
+        data['current']['weather'][0]['main'],
+        data['current']['weather'][0]['description']
+      ),
+      'daily': [
+        Weather(
+          day['temp']['max'],
+          day['feels_like']['day'],
+          day['weather'][0]['main'],
+          day['weather'][0]['description'] 
+        ) for day in data['daily'][1:]
+      ]
+    }
+
+
+
+
+
+
+
 
     
